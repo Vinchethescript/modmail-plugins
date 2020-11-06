@@ -9,7 +9,7 @@ class Moderation(commands.Cog):
     """
     Commands to moderate your server.*
     NOTE: You will need the moderator permission
-    level in order to run one of these commands.*_ _
+    level in order to run any of these commands.*_ _
     """
 
     def __init__(self, bot):
