@@ -36,7 +36,7 @@ class Moderation(commands.Cog):
         if muterole == None:
             return
 
-        role = channel.guild.get_role(muterole[str(ctx.guild.id)])
+        role = channel.guild.get_role(muterole[str(channel.guild.id)])
         if role == None:
             return
         await channel.set_permissions(role, send_messages=False)
