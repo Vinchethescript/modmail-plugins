@@ -36,6 +36,9 @@ class Moderation(commands.Cog):
         if muterole == None:
             return
 
+        if not str(channel.guild.id) in muterole:
+            return
+
         role = channel.guild.get_role(muterole[str(channel.guild.id)])
         if role == None:
             return
