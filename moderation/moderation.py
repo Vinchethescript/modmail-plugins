@@ -510,7 +510,7 @@ class Moderation(commands.Cog):
                 title="Purge",
                 description=f"{amount} {messages} {have} been purged by {ctx.author.mention}.",
                 color=self.bot.main_color
-            )
+            ).set_footer(text=f"This is the {case} case.")
         )
         
         await ctx.send(
@@ -519,7 +519,7 @@ class Moderation(commands.Cog):
                 description=f"Purged {amount} {messages}.",
                 color=self.bot.main_color
             ).set_footer(
-                text=f"This is the {case} case!"
+                text=f"This is the {case} case."
             )
         )
 
