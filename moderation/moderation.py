@@ -398,11 +398,14 @@ class Moderation(commands.Cog):
         Nukes (deletes EVERY message in) a channel.
         You can mention a channel to nuke that one instead.
         """
+        if channel == None:
+            channel = ctx.channel
+        tot = "this" if channel.id == ctx.channel.id else "that"
         message = await ctx.send(
             embed=discord.Embed(
                 title="Are you sure?",
                 description=(
-                    "This command will delete EVERY SINGLE MESSAGE in this channel!\n"
+                    f"This command will delete EVERY SINGLE MESSAGE in {tot} channel!\n"
                     'If you are sure and responsible about what might happen send "Yes, do as I say!". '
                     "Otherwise, send anything else to abort.\n"
                     "**Unexpected bad things might happen if you decide to continue!**"
@@ -439,7 +442,7 @@ class Moderation(commands.Cog):
                 return await ctx.send(
                     embed=discord.Embed(
                         title="Error",
-                        description="I don't have enough permissions to nuke this channel.",
+                        description=f"I don't have enough permissions to nuke {tot} channel.",
                         color=discord.Color.red()
                     ).set_footer(
                         text="Please fix the permissions."
