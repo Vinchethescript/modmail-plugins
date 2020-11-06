@@ -431,13 +431,13 @@ class Moderation(commands.Cog):
         if ensured:
             case = await self.get_case()
 
-            channel_position = ctx.channel.position
+            channel_position = channel.position
 
             try:
-                new_channel = await ctx.channel.clone()
+                new_channel = await channel.clone()
 
                 await new_channel.edit(position=channel_position)
-                await ctx.channel.delete()
+                await channel.delete()
             except discord.errors.Forbidden:
                 return await ctx.send(
                     embed=discord.Embed(
