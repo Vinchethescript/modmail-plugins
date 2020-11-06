@@ -36,7 +36,7 @@ class Moderation(commands.Cog):
         if muterole == None:
             return
 
-        role = channel.guild.get_role(muterole["id"])
+        role = channel.guild.get_role(muterole[str(ctx.guild.id)])
         if role == None:
             return
         await channel.set_permissions(role, send_messages=False)
@@ -70,7 +70,7 @@ class Moderation(commands.Cog):
             )
         else:
             await self.db.find_one_and_update(
-                {"_id": "logging"}, {"$set": {"id": channel.id}}, upsert=True
+                {"_id": "logging"}, {"$set": {str(ctx.guild.id): channel.id}}, upsert=True
             )
             await ctx.send(
                 embed=discord.Embed(
@@ -86,7 +86,7 @@ class Moderation(commands.Cog):
         """Sets up the muted role."""
         if role is None:
             if (await self.db.find_one({"_id": "muterole"})) is not None:
-                if ctx.guild.get_role((await self.db.find_one({"_id": "muterole"}))["id"]) != None:
+                if ctx.guild.get_role((await self.db.find_one({"_id": "muterole"}))[str(ctx.guild.id)]) != None:
                     return await ctx.send(
                         embed=discord.Embed(
                             title="Error",
@@ -97,7 +97,7 @@ class Moderation(commands.Cog):
             role = await ctx.guild.create_role(name="Muted")
 
         await self.db.find_one_and_update(
-            {"_id": "muterole"}, {"$set": {"id": role.id}}, upsert=True
+            {"_id": "muterole"}, {"$set": {str(ctx.guild.id): role.id}}, upsert=True
         )
 
         await ctx.send(
@@ -267,8 +267,8 @@ class Moderation(commands.Cog):
         no_role = False
         if role == None:
             no_role = True
-        elif "id" in role:
-            role = ctx.guild.get_role(role["id"])
+        elif str(ctx.guild.id) in role:
+            role = ctx.guild.get_role(role[str(ctx.guild.id)])
             if role == None:
                 no_role = True
 
@@ -337,8 +337,8 @@ class Moderation(commands.Cog):
         no_role = False
         if role == None:
             no_role = True
-        elif "id" in role:
-            role = ctx.guild.get_role(role["id"])
+        elif str(ctx.guild.id) in role:
+            role = ctx.guild.get_role(role[str(ctx.guild.id)])
             if role == None:
                 no_role = True
 
@@ -542,12 +542,12 @@ class Moderation(commands.Cog):
             suffix = "th"
         return f"{num}{suffix}"
 
-    async def log(self, embed: discord.Embed):
+    async def log(self, guild: discord.Guild, embed: discord.Embed):
         """Sends logs to the log channel."""
         channel = await self.db.find_one({"_id": "logging"})
         if channel == None:
             return
-        channel = self.bot.get_channel(channel["id"])
+        channel = self.bot.get_channel(channel[str(guild.id)])
         if channel == None:
             return
         return await channel.send(embed=embed)
