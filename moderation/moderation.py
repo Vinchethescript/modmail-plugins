@@ -553,6 +553,8 @@ class Moderation(commands.Cog):
         channel = await self.db.find_one({"_id": "logging"})
         if channel == None:
             return
+        if not str(guild.id) in channel:
+            return
         channel = self.bot.get_channel(channel[str(guild.id)])
         if channel == None:
             return
